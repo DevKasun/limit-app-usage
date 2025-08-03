@@ -11,7 +11,16 @@
     "48": "icon48.png",
     "128": "icon128.png"
   },
-  "permissions": [],
+  "permissions": ["tabs", "storage", "alarms", "notifications"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
   }
