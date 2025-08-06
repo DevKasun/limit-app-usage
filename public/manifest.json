@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Limit App Usage",
+  "name": "Limit Web Usage",
   "version": "1.0",
   "description": "A Chrome extension to limit usage of social media websites with daily time restrictions",
   "action": {

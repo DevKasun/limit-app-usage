@@ -1,21 +1,27 @@
-import { createSignal } from "solid-js";
-
 function App() {
-  const [message] = createSignal("Welcome to Limit App Usage");
-
   return (
-    <div
-      style={{
-        padding: "20px",
-        width: "300px",
-        background: "white",
-        "border-radius": "10px",
-      }}
-    >
-      <h2 style={{ color: "black" }}>{message()}</h2>
-      <p style={{ color: "black" }}>
-        Limit your social media usage with this extension.
-      </p>
+    <div className="app-container">
+      <header>
+        <h1 className="title-1">Welcome to React</h1>
+      </header>
+      <main>
+        <form className="add-website-form">
+          <div className="group">
+            <input type="text" placeholder="Website URL" />
+            <input type="number" placeholder="Time in minutes" />
+          </div>
+          <button type="submit" className="solid-success">
+            Add Website
+          </button>
+        </form>
+
+        <ul className="limited-websites-list">
+          <li>
+            <p>Facebook (10 mins)</p>
+            <button className="solid-danger">Delete</button>
+          </li>
+        </ul>
+      </main>
     </div>
   );
 }
