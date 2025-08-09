@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import DeleteIcon from './icons/delete-icon';
+import EditIcon from './icons/edit-icon';
+import SaveIcon from './icons/save-icon';
+
 type LimitItem = { domain: string; minutesPerDay: number };
 type PerSiteStatus = {
 	domain: string;
@@ -40,6 +44,29 @@ function App() {
 
 	useEffect(() => {
 		void refreshLimits();
+	}, []);
+
+	// Close the popup when the window loses focus (e.g., user clicks outside)
+	useEffect(() => {
+		function handleWindowBlur() {
+			window.close();
+		}
+
+		function handleVisibilityChange() {
+			if (document.visibilityState === 'hidden') {
+				window.close();
+			}
+		}
+
+		window.addEventListener('blur', handleWindowBlur);
+		document.addEventListener('visibilitychange', handleVisibilityChange);
+		return () => {
+			window.removeEventListener('blur', handleWindowBlur);
+			document.removeEventListener(
+				'visibilitychange',
+				handleVisibilityChange
+			);
+		};
 	}, []);
 
 	async function refreshLimits() {
@@ -94,7 +121,7 @@ function App() {
 			</header>
 			<main>
 				<form className='add-website-form' onSubmit={onSubmit}>
-					<div className='group' style={{ display: 'grid', gap: 8 }}>
+					<div className='group'>
 						<input
 							type='text'
 							placeholder='Website URL or domain (e.g. facebook.com)'
@@ -113,16 +140,12 @@ function App() {
 						type='submit'
 						className='solid-success'
 						disabled={isAddDisabled}
-						style={{ marginTop: 8 }}
 					>
 						Add / Update
 					</button>
 				</form>
 
-				<ul
-					className='limited-websites-list'
-					style={{ listStyle: 'none', padding: 0, marginTop: 16 }}
-				>
+				<ul className='limited-websites-list'>
 					{limits.length === 0 && (
 						<li style={{ opacity: 0.7 }}>No limits yet.</li>
 					)}
@@ -132,18 +155,13 @@ function App() {
 						.map((item) => (
 							<li
 								key={item.domain}
-								style={{
-									display: 'flex',
-									alignItems: 'center',
-									justifyContent: 'space-between',
-									padding: '6px 0',
-								}}
+								className='limited-website-item'
 							>
-								<div style={{ display: 'grid', gap: 4 }}>
+								<div className='limited-website-details'>
 									<div style={{ fontWeight: 600 }}>
 										{item.domain}
 									</div>
-									<div style={{ fontSize: 12, opacity: 0.8 }}>
+									<div>
 										{(() => {
 											const status = perSite.find(
 												(s) => s.domain === item.domain
@@ -156,13 +174,7 @@ function App() {
 										})()}
 									</div>
 								</div>
-								<div
-									style={{
-										display: 'flex',
-										gap: 8,
-										alignItems: 'center',
-									}}
-								>
+								<div className='limited-website-controls'>
 									{(() => {
 										const isEditing =
 											!!editing[item.domain];
@@ -240,14 +252,14 @@ function App() {
 															)
 														}
 													>
-														Edit
+														<EditIcon />
 													</button>
 												) : (
 													<button
 														className='solid-success'
 														onClick={commit}
 													>
-														Save
+														<SaveIcon />
 													</button>
 												)}
 												<button
@@ -258,7 +270,7 @@ function App() {
 														)
 													}
 												>
-													Delete
+													<DeleteIcon />
 												</button>
 											</>
 										);
