@@ -234,11 +234,9 @@ function App() {
 														)
 													}
 													onBlur={commit}
-													style={{ width: 72 }}
+													style={{ width: 48 }}
+													placeholder='min/day'
 												/>
-												<span style={{ fontSize: 12 }}>
-													min/day
-												</span>
 												{!isEditing ? (
 													<button
 														className='solid-success'
